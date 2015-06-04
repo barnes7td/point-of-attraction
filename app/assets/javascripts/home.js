@@ -18,7 +18,7 @@ $(document).on('click', '#reset-button', function() {
 });
 
 function incrementTimer() {
-  if ( $(currentTimer()).text() == "2") {
+  if ( $(currentTimer()).text() == "17") {
     stopTimer();
     timerIndex += 1;
     createNewTimer();
