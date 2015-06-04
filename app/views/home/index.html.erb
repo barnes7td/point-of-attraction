@@ -1,0 +1,13 @@
+<h1>Point of Attraction</h1>
+<p>It only takes 68 seconds</p>
+
+<%# link_to "Start", home_start_path, id: "start-button"%>
+<%= link_to "Start", "#", id: "start-button", remote: true %>
+<%= link_to "Stop", "#", id: "stop-button", remote: true %>
+<%= link_to "Reset", "#", id: "reset-button", remote: true %>
+
+<br>
+<br>
+<div id="timers-container">
+  <h1 id="timer-1">0</h1>
+</div>
