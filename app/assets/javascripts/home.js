@@ -3,7 +3,14 @@
 //   $('#timer').text(Number($('#timer').text()) + 1); 
 // });
 var timer;
+var timer2;
 var timerIndex = 1;
+var timeInterval = 3;
+var timeMax = timeInterval * 4;
+var numCounters = 4;
+var finishMessage = timeMax + ' seconds - It has manifested!'
+
+$(document).ready( function() { resetTimer() });
 
 $(document).on('click', '#start-button', function() { 
   startTimer();
@@ -18,12 +25,20 @@ $(document).on('click', '#reset-button', function() {
 });
 
 function incrementTimer() {
-  if ( $(currentTimer()).text() == "17") {
+  if ( $(currentTimer()).text() == timeInterval.toString() ) {
     stopTimer();
     timerIndex += 1;
     createNewTimer();
   }else{
     addOne();
+  }
+}
+
+function incrementMainTimer() {
+  if ( $('#timer').text() == timeMax.toString() ) {
+    stopTimer();
+  }else{
+    $('#timer').text(Number($('#timer').text()) + 1);
   }
 }
 
@@ -36,27 +51,35 @@ function currentTimer() {
 }
 
 function startTimer() {
+  if ($('#timer').text() == finishMessage) {
+    resetTimer()
+  }
   timer = setInterval( function() { incrementTimer() }, 1000);
+  timer2 = setInterval( function() { incrementMainTimer() }, 1000);
 }
 
 function stopTimer() {
+  $('#bell-tone').play();
   clearInterval(timer);
+  clearInterval(timer2);
 }
 
 function resetTimer() {
   timerIndex = 1;
+  $('#timer').text("0");
   $('#timer-1').text("0");
-  $('#timer-2').remove();
-  $('#timer-3').remove();
-  $('#timer-4').remove();
-  $('#finish').remove();
+  $('#timer-2').text(" ");
+  $('#timer-3').text(" ");
+  $('#timer-4').text(" ");
+  $('#finish').text(" ");
 }
 
 function createNewTimer() {
-  if (timerIndex < 5) {
-    $('#timers-container').append('<h1 id="timer-' + timerIndex + '">1</h1>');
+  if (timerIndex <= numCounters) {
+    incrementMainTimer();
+    $(currentTimer()).text("1");
     startTimer();
   } else {
-    $('#timers-container').append('<h1 id="finish"> 68 seconds - It has manifested! </h1>');
+    $('#timer').text(finishMessage);
   }
 }

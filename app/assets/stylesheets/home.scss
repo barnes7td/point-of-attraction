@@ -1,3 +1,27 @@
 // Place all the styles related to the Home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  font-family: Tahoma;
+}
+
+#timer-1, #timer-2, #timer-3, #timer-4 {
+  font-size: 20px;
+  color: #000000;
+  line-height: 48px;
+  letter-spacing: 1px;
+}
+
+h1 {
+  height: 40px;
+  line-height: 48px;
+  letter-spacing: 1px;
+}
+
+#path {
+  background: #7ED321;
+  border: 1px solid #979797;
+  z-index: -1;
+  
+}
