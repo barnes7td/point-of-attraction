@@ -3,12 +3,14 @@
 //   $('#timer').text(Number($('#timer').text()) + 1); 
 // });
 var timer;
-var timer2;
+var timerMain;
 var timerIndex = 1;
-var timeInterval = 3;
+var timeInterval = 17; // This should be 17
 var timeMax = timeInterval * 4;
 var numCounters = 4;
 var finishMessage = timeMax + ' seconds - It has manifested!'
+var audio = new Audio('assets/196107__aiwha__bell.wav');
+var newVolume = 1.0;
 
 $(document).ready( function() { resetTimer() });
 
@@ -17,51 +19,23 @@ $(document).on('click', '#start-button', function() {
 });
 
 $(document).on('click', '#stop-button', function() { 
-  stopTimer();
+  stopTimer(timer);
+  stopTimer(timerMax);
 });
 
 $(document).on('click', '#reset-button', function() { 
   resetTimer();
 });
 
-function incrementTimer() {
-  if ( $(currentTimer()).text() == timeInterval.toString() ) {
-    stopTimer();
-    timerIndex += 1;
-    createNewTimer();
-  }else{
-    addOne();
-  }
-}
-
-function incrementMainTimer() {
-  if ( $('#timer').text() == timeMax.toString() ) {
-    stopTimer();
-  }else{
-    $('#timer').text(Number($('#timer').text()) + 1);
-  }
-}
-
-function addOne() {
-  $(currentTimer()).text(Number($(currentTimer()).text()) + 1);
-}
-
-function currentTimer() {
-  return('#timer-' + timerIndex);
-}
-
-function startTimer() {
+function startTimer(timer) {
   if ($('#timer').text() == finishMessage) {
-    resetTimer()
+    resetTimer();
   }
-  timer = setInterval( function() { incrementTimer() }, 1000);
-  timer2 = setInterval( function() { incrementMainTimer() }, 1000);
+  runTimers();
 }
 
-function stopTimer() {
-  $('#bell-tone').play();
+function stopTimer(timer) {
   clearInterval(timer);
-  clearInterval(timer2);
 }
 
 function resetTimer() {
@@ -74,11 +48,39 @@ function resetTimer() {
   $('#finish').text(" ");
 }
 
+function runTimers() {
+  timer = setInterval( function() { incrementTimer() }, 1000);
+  timerMax = setInterval( function() { incrementMainTimer() }, 1000);
+}
+
+function incrementTimer() {
+  if ( $(currentTimer()).text() != timeInterval.toString() ) {
+    $(currentTimer()).text(Number($(currentTimer()).text()) + 1);
+  }else{
+    stopTimer(timer);
+    createNewTimer(timer);
+  }
+}
+
+function incrementMainTimer() {
+  if ( $('#timer').text() != timeMax.toString() ) {
+    $('#timer').text(Number($('#timer').text()) + 1);
+  } else {
+    audio.play();
+    setTimeout( function() { audio.pause() }, 2800); 
+    stopTimer(timerMax);
+  }
+}
+
+function currentTimer() {
+  return('#timer-' + timerIndex);
+}
+
 function createNewTimer() {
+  timerIndex += 1;
   if (timerIndex <= numCounters) {
-    incrementMainTimer();
     $(currentTimer()).text("1");
-    startTimer();
+    timer = setInterval( function() { incrementTimer() }, 1000);
   } else {
     $('#timer').text(finishMessage);
   }
